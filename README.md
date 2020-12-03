@@ -336,3 +336,8 @@ public static abstract class Stub extends android.os.Binder implements com.xiaoy
 boolean _status = mRemote.transact(Stub.TRANSACTION_addBook, _data, _reply, 0);
 ```
 而这个过程就是一个RPC过程。
+
+### bindService
+```
+context.bindService->ServiceManager->ActivityManagerService->AMS.bindIsolatedService->ActiveServices->ActiveServices.bindServiceLocked->找到client，然后调用client的connection并返回binder。
+```

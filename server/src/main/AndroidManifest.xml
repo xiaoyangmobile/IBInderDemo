@@ -18,10 +18,14 @@
         </activity>
 
         <service
-            android:process=":remote"
+            android:name=".CustomService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <service
             android:name=".MyService"
-            android:exported="true">
-        </service>
+            android:exported="true"
+            android:process=":remote"></service>
     </application>
 
 </manifest>

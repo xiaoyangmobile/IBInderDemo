@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public void addBook(View view) {
         try {
             iBookInterface.addBook(new Book("123"));
+            customAction();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -54,6 +55,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void customAction() {
+        android.os.Parcel _data = android.os.Parcel.obtain();
+        android.os.Parcel _reply = android.os.Parcel.obtain();
+        try {
+            _data.writeInterfaceToken("com.xiaoyang.server.IBookInterface");
+            _data.writeString("Hello Service");
+            boolean _status = customBinder.transact(0, _data, _reply, 0);
+            _reply.readException();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } finally {
+            _reply.recycle();
+            _data.recycle();
+        }
+    }
+
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -64,6 +81,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             iBookInterface = null;
+        }
+    };
+
+    private IBinder customBinder;
+
+    private ServiceConnection customConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            customBinder = service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            customBinder = null;
         }
     };
 }
